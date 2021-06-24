@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "215323924603",
+    "project_id": "live-location-tracker-b570c",
+    "storage_bucket": "live-location-tracker-b570c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215323924603:android:994765a2f6145b0cd2eade",
+        "android_client_info": {
+          "package_name": "com.example.live_location_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215323924603-ovupjp8omme795hrc9grspnshi55j4r6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.live_location_tracker",
+            "certificate_hash": "c6a30c06af3cda35b9ce46cbd5504adc994fb394"
+          }
+        },
+        {
+          "client_id": "215323924603-pavvdoefifvem5k05pgi0r3kv04sq4le.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZhBBngVuq9w8Cw9KLAKVxzQsgKYxhfRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215323924603-pavvdoefifvem5k05pgi0r3kv04sq4le.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
