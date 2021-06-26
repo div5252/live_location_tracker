@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({ Key? key }) : super(key: key);
@@ -12,14 +12,13 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
 
   late String _email, _name;
 
-  Future<void> fetchData() async {  print(_auth.currentUser!.uid);
-    DocumentSnapshot ds = await collectionReference.doc(_auth.currentUser!.uid).get(); 
-    _name = ds['name'];
-    _email = ds['email'];
+  Future<void> fetchData() async {  
+    SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
+    _name = sharedpreferences.getString('name')!;
+    _email = sharedpreferences.getString('email')!;
   }
 
   @override

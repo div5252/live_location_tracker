@@ -1,6 +1,8 @@
 import 'signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 
 class Login extends StatefulWidget {
@@ -13,18 +15,30 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  late String _email, _password;
+  late String _email, _password, _name;
 
   checkAuthentication() async
   {
     _auth.authStateChanges().listen((user) {
       if(user != null)
       {
+        this.addData();
         Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
       }
     });
+  }
+
+  addData() async
+  {
+    DocumentSnapshot ds = await collectionReference.doc(_auth.currentUser!.uid).get(); 
+    _name = ds['name'];
+    // _email = ds['email'];
+    SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
+    sharedpreferences.setString('name', _name);
+    sharedpreferences.setString('email', _email);
   }
 
   @override

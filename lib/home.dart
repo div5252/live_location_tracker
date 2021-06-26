@@ -76,15 +76,6 @@ class _HomeState extends State<Home> {
               ),
             ),
             SizedBox(height: 30.0),
-            Container(
-              child: Text(
-                "Hello ${user?.displayName}, you are logged in as ${user?.email}",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
           ],
         ),
       ),
