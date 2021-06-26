@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home.dart';
 
 class SignUp extends StatefulWidget {
@@ -13,6 +14,7 @@ class _SignUpState extends State<SignUp> {
   
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
 
   late String _email, _password, _name;
 
@@ -20,9 +22,15 @@ class _SignUpState extends State<SignUp> {
     _auth.authStateChanges().listen((user) {
       if(user != null)
       {
+        this.addData();
         Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
       }
     });
+  }
+
+  addData() {
+    Map<String, dynamic> data = {'name': _name, 'email': _email };
+    collectionReference.doc(_auth.currentUser!.uid.toString()).set(data);
   }
 
   @override
