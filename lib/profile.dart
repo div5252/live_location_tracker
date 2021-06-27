@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'edit_profile.dart';
+import 'home.dart';
 
 class Profile extends StatefulWidget {
   const Profile({ Key? key }) : super(key: key);
@@ -30,9 +32,34 @@ class _ProfileState extends State<Profile> {
     _auth.signOut();
   }
 
+  navigateToHome() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+  }
+  
+  navigateToEditProfile() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.green,
+          ),
+          onPressed: navigateToHome,
+        ),
+        actions: <Widget> [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: navigateToEditProfile,
+          ),
+        ],
+      ),
       body: Container(
         child: Column(
           children: <Widget>[
