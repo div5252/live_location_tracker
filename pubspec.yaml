@@ -34,6 +34,8 @@ dependencies:
   flutter_signin_button: ^2.0.0
   cloud_firestore: ^2.2.2
   shared_preferences: ^2.0.6
+  geolocator: ^7.2.0+1
+  google_maps_flutter: ^2.0.6
 
 dev_dependencies:
   flutter_test:
