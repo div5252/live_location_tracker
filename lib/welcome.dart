@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';  
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 import 'login.dart';
 import 'signup.dart';
@@ -21,11 +23,11 @@ class _WelcomeState extends State<Welcome> {
   navigateToRegister() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
   }
-
   
   Future<UserCredential> googleSignIn() async {
     GoogleSignIn _googleSignIn = GoogleSignIn(); // here object of google signIn created
     final FirebaseAuth _auth = FirebaseAuth.instance;
+    final CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -36,6 +38,15 @@ class _WelcomeState extends State<Welcome> {
 
         final UserCredential user =
             await _auth.signInWithCredential(credential);
+
+
+        
+        Map<String, dynamic> data = {'name': Text(googleUser.displayName ?? ''), 'email': Text(googleUser.email)};
+        collectionReference.doc(_auth.currentUser!.uid.toString()).set(data);
+        // _email = ds['email'];
+        SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
+        sharedpreferences.setString('name', googleUser.displayName??'');
+        sharedpreferences.setString('email', googleUser.email);
 
         await Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
 

@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'edit_profile.dart';
 import 'home.dart';
+import 'package:google_sign_in/google_sign_in.dart';  
 
 class Profile extends StatefulWidget {
-  const Profile({ Key? key }) : super(key: key);
+  const Profile({Key? key}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   late String _email, _name;
 
-  Future<void> fetchData() async {  
+  Future<void> fetchData() async {
     SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
     _name = sharedpreferences.getString('name')!;
     _email = sharedpreferences.getString('email')!;
@@ -27,17 +27,21 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
   }
-  
+
   signOut() async {
+    
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+    await _googleSignIn.disconnect();
     _auth.signOut();
   }
 
   navigateToHome() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
   }
-  
+
   navigateToEditProfile() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => EditProfile()));
   }
 
   @override
@@ -53,7 +57,7 @@ class _ProfileState extends State<Profile> {
           ),
           onPressed: navigateToHome,
         ),
-        actions: <Widget> [
+        actions: <Widget>[
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: navigateToEditProfile,
@@ -63,43 +67,44 @@ class _ProfileState extends State<Profile> {
       body: Container(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 40.0,),
-            FutureBuilder(
-              future: fetchData(),
-              builder: (context, snapshot) {
-                if(snapshot.connectionState != ConnectionState.done) {
-                  return Text(
-                    "Loading"
-                  );
-                }
-                return Column(
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "Name: $_name",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30.0),
-                    Container(
-                      child: Text(
-                        "Email: $_email",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }
+            SizedBox(
+              height: 40.0,
             ),
-            SizedBox(height: 40.0,),
+            FutureBuilder(
+                future: fetchData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Text("Loading");
+                  }
+                  return Column(
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "Name: $_name",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30.0),
+                      Container(
+                        child: Text(
+                          "Email: $_email",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+            SizedBox(
+              height: 40.0,
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
               child: ElevatedButton(
-                onPressed: signOut, 
+                onPressed: signOut,
                 child: Text(
                   'SIGN OUT',
                   style: TextStyle(

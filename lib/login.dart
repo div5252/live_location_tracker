@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'home.dart';
+import 'home.dart';  
 
 class Login extends StatefulWidget {
   const Login({ Key? key }) : super(key: key);
@@ -17,6 +17,7 @@ class _LoginState extends State<Login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
 
   late String _email, _password, _name;
 
