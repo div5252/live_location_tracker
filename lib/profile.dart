@@ -29,9 +29,6 @@ class _ProfileState extends State<Profile> {
   }
 
   signOut() async {
-    
-    GoogleSignIn _googleSignIn = GoogleSignIn();
-    await _googleSignIn.disconnect();
     _auth.signOut();
   }
 

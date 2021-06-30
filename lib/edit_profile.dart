@@ -30,15 +30,49 @@ class _EditProfileState extends State<EditProfile> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      Map<String, dynamic> data = {'name': newname, 'email': newemail};
-      collectionReference.doc(_auth.currentUser!.uid.toString()).update(data);
-
-      SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
-      sharedpreferences.setString('name', newname);
-      sharedpreferences.setString('email', newemail);
+      if (newemail != _email) {
+        _auth.currentUser!.updateEmail(newemail)
+        .then((_) {
+          updateData();
+        })
+        .catchError((e) {
+          showError(e.toString());
+        });
+      }
 
       navigateToEditProfile();
     }
+  }
+
+  updateData() async {
+    Map<String, dynamic> data = {'name': newname, 'email': newemail};
+    collectionReference.doc(_auth.currentUser!.uid.toString()).update(data);
+
+    SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
+    sharedpreferences.setString('name', newname);
+    sharedpreferences.setString('email', newemail);
+
+    navigateToEditProfile();
+  }
+
+  showError(String errormessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ERROR'),
+          content: Text(errormessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            )
+          ],
+        );
+      }
+    );
   }
   
   navigateToProfile() async {
@@ -88,7 +122,7 @@ class _EditProfileState extends State<EditProfile> {
                         onSaved: (input) {
                           newname = _name;
                           if (input!.isNotEmpty) {
-                            newname = input;
+                            newname = input.trim();
                           }
                         },
                         validator: null,
@@ -108,7 +142,7 @@ class _EditProfileState extends State<EditProfile> {
                         onSaved: (input) {
                           newemail = _email;
                           if (input!.isNotEmpty) {
-                            newemail = input;
+                            newemail = input.trim();
                           }
                         },
                         validator: null,
