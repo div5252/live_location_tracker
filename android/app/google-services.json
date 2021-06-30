@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "215323924603-nh2pk45t4okr3lmfq5bsv91vvi0hnrhq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.live_location_tracker",
+            "certificate_hash": "d7638f0bb1ee74a477b5eb5de34ebdba4fa4a2c9"
+          }
+        },
+        {
           "client_id": "215323924603-ovupjp8omme795hrc9grspnshi55j4r6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'home.dart';
 import 'login.dart';
 import 'signup.dart';
 
@@ -15,9 +18,33 @@ class _WelcomeState extends State<Welcome> {
   navigateToLogin() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }
-
   navigateToRegister() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+  }
+
+  
+  Future<UserCredential> googleSignIn() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn(); // here object of google signIn created
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    if (googleUser != null) {
+      GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      if (googleAuth.idToken != null && googleAuth.accessToken != null) {
+        final AuthCredential credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+        final UserCredential user =
+            await _auth.signInWithCredential(credential);
+
+        await Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+
+        return user;
+      } else {
+        throw StateError('Missing Google Auth Token');
+      }
+    } else
+      throw StateError('Sign in Aborted');
   }
 
   @override
@@ -82,7 +109,7 @@ class _WelcomeState extends State<Welcome> {
             SignInButton(
               Buttons.Google,
               text: "Sign up with Google",
-              onPressed: () {},
+              onPressed: googleSignIn,
             )
           ],
         ),
@@ -90,3 +117,5 @@ class _WelcomeState extends State<Welcome> {
     );
   }
 }
+
+
