@@ -5,22 +5,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'profile.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({ Key? key }) : super(key: key);
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
 }
 
-
 class _EditProfileState extends State<EditProfile> {
-  
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
-  
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+
   late String _email, _name, newemail, newname;
 
-  Future<void> fetchData() async {  
+  Future<void> fetchData() async {
     SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
     _name = sharedpreferences.getString('name')!;
     _email = sharedpreferences.getString('email')!;
@@ -31,13 +30,13 @@ class _EditProfileState extends State<EditProfile> {
       _formKey.currentState!.save();
 
       if (newemail != _email) {
-        _auth.currentUser!.updateEmail(newemail)
-        .then((_) {
+        _auth.currentUser!.updateEmail(newemail).then((_) {
           updateData();
-        })
-        .catchError((e) {
+        }).catchError((e) {
           showError(e.toString());
         });
+      } else if (newname != _name) {
+        updateData();
       }
 
       navigateToEditProfile();
@@ -51,38 +50,41 @@ class _EditProfileState extends State<EditProfile> {
     SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
     sharedpreferences.setString('name', newname);
     sharedpreferences.setString('email', newemail);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Profile Updated Successfully'),
+    ));
 
     navigateToEditProfile();
   }
 
   showError(String errormessage) {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('ERROR'),
-          content: Text(errormessage),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            )
-          ],
-        );
-      }
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('ERROR'),
+            content: Text(errormessage),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              )
+            ],
+          );
+        });
   }
-  
+
   navigateToProfile() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
   }
 
   navigateToEditProfile() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => EditProfile()));
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,66 +105,65 @@ class _EditProfileState extends State<EditProfile> {
           children: [
             Text(
               "Edit Profile",
-              style: TextStyle(fontSize: 25,),
+              style: TextStyle(
+                fontSize: 25,
+              ),
             ),
             SizedBox(height: 35),
             FutureBuilder(
-              future: fetchData(),
-              builder: (context, snapshot) {
-                if(snapshot.connectionState != ConnectionState.done) {
-                  return Text(
-                    "Loading"
+                future: fetchData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Text("Loading");
+                  }
+                  return Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          onSaved: (input) {
+                            newname = _name;
+                            if (input!.isNotEmpty) {
+                              newname = input.trim();
+                            }
+                          },
+                          validator: null,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(bottom: 3),
+                            labelText: "Name",
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            hintText: "$_name",
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 35),
+                        TextFormField(
+                          onSaved: (input) {
+                            newemail = _email;
+                            if (input!.isNotEmpty) {
+                              newemail = input.trim();
+                            }
+                          },
+                          validator: null,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(bottom: 3),
+                            labelText: "Email",
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            hintText: "$_email",
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 35),
+                      ],
+                    ),
                   );
-                }
-                return Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        onSaved: (input) {
-                          newname = _name;
-                          if (input!.isNotEmpty) {
-                            newname = input.trim();
-                          }
-                        },
-                        validator: null,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(bottom: 3),
-                          labelText: "Name",
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          hintText: "$_name",
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 35),
-                      TextFormField(
-                        onSaved: (input) {
-                          newemail = _email;
-                          if (input!.isNotEmpty) {
-                            newemail = input.trim();
-                          }
-                        },
-                        validator: null,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(bottom: 3),
-                          labelText: "Email",
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          hintText: "$_email",
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 35),
-                    ],
-                  ),
-                );
-              }
-            ),
+                }),
             SizedBox(height: 35),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
