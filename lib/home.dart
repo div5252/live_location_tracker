@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'profile.dart';
 import 'welcome.dart';
+import 'groups.dart';
 
 class Home extends StatefulWidget {
   const Home({ Key? key }) : super(key: key);
@@ -105,6 +106,10 @@ class _HomeState extends State<Home> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
   }
 
+  navigateToGroups() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Groups()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,6 +136,24 @@ class _HomeState extends State<Home> {
               ),
             ),
             SizedBox(height: 30.0),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: navigateToGroups,
+                child: Text(
+                  'Groups',
+                  style: TextStyle(
+                    fontSize: 20, 
+                    fontWeight: FontWeight.bold, 
+                    color: Colors.white,
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.orange),
+                ),
+              ),
+            ),
+            SizedBox(height: 30.0,),
             Stack(
               children: <Widget>[
                 Container(
