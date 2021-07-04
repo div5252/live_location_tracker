@@ -253,6 +253,8 @@ class _AddGroupsState extends State<AddGroups> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Group Created'),
         ));
+        _selectedNames.clear();
+        _isSelected.clear();
         navigateToGroups();
       }
       catch(e) {
