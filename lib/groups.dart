@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'add_groups.dart';
+import 'group_page.dart';
 
 class Groups extends StatefulWidget {
   const Groups({Key? key}) : super(key: key);
@@ -59,6 +60,9 @@ class _GroupsState extends State<Groups> {
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage(id: documents[index].id)));
+                          },
                           title: Text(
                             documents[index]['groupname']
                           ),
