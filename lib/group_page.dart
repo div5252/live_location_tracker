@@ -7,21 +7,22 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:rxdart/rxdart.dart';
 import 'groups.dart';
+import 'edit_group.dart';
 
 class GroupPage extends StatefulWidget {
   final String id;
-  
-  const GroupPage({ Key? key, required this.id }) : super(key: key);
+
+  const GroupPage({Key? key, required this.id}) : super(key: key);
 
   @override
   _GroupPageState createState() => _GroupPageState();
 }
 
 class _GroupPageState extends State<GroupPage> {
-  
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final CollectionReference groupReference = FirebaseFirestore.instance.collection('groups');
-  
+  final CollectionReference groupReference =
+      FirebaseFirestore.instance.collection('groups');
+
   BehaviorSubject<double> radius = BehaviorSubject();
   late Stream<List<DocumentSnapshot>> stream;
   double _value = 0.0;
@@ -33,31 +34,33 @@ class _GroupPageState extends State<GroupPage> {
   late double _longitude;
   bool done = false;
   Location location = new Location();
-  late String _groupname; 
-  
+  late String _groupname;
+
   onCreateMap(GoogleMapController mapController) {
     location.onLocationChanged.listen((LocationData currentLocation) {
       mapController.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(currentLocation.latitude!, currentLocation.longitude!), 
-            zoom: 15,
-          )
-        ),
+        CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
+          zoom: 15,
+        )),
       );
-      GeoFirePoint myLocation = Geoflutterfire().point(latitude: currentLocation.latitude!, longitude: currentLocation.longitude!);
+      GeoFirePoint myLocation = Geoflutterfire().point(
+          latitude: currentLocation.latitude!,
+          longitude: currentLocation.longitude!);
       addToDB(myLocation);
     });
 
-    stream.listen((List<DocumentSnapshot> documentList) { 
+    stream.listen((List<DocumentSnapshot> documentList) {
       updateMarkers(documentList);
     });
   }
 
   addToDB(myLocation) {
-    groupReference.doc(widget.id).collection('locations').doc(_auth.currentUser!.uid).set(
-      {'name': _name, 'position': myLocation.data}
-    );
+    groupReference
+        .doc(widget.id)
+        .collection('locations')
+        .doc(_auth.currentUser!.uid)
+        .set({'name': _name, 'position': myLocation.data});
   }
 
   changedRadius(value) {
@@ -73,7 +76,7 @@ class _GroupPageState extends State<GroupPage> {
     setState(() {
       _markers.clear();
     });
-    documentList.forEach((DocumentSnapshot document) { 
+    documentList.forEach((DocumentSnapshot document) {
       final GeoPoint point = document['position']['geopoint'];
       addMarker(point.latitude, point.longitude, document['name']);
     });
@@ -91,16 +94,21 @@ class _GroupPageState extends State<GroupPage> {
   }
 
   initStream() {
-    GeoFirePoint center = Geoflutterfire().point(latitude: _latitude, longitude: _longitude);
+    GeoFirePoint center =
+        Geoflutterfire().point(latitude: _latitude, longitude: _longitude);
     stream = radius.switchMap((rad) {
-      return Geoflutterfire().collection(
-        collectionRef: groupReference.doc(widget.id).collection('locations')).within(
-          center: center, 
-          radius: rad, 
+      return Geoflutterfire()
+        .collection(
+            collectionRef:
+                groupReference.doc(widget.id).collection('locations'))
+        .within(
+          center: center,
+          radius: rad,
           field: 'position',
           strictMode: true,
         );
-    });
+      }
+    );
   }
 
   fetchData() async {
@@ -146,15 +154,20 @@ class _GroupPageState extends State<GroupPage> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Groups()));
   }
 
+  navigateToEditGroup() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditGroup(id: widget.id,)));
+  }
+
   @override
   void initState() {
     super.initState();
     this.fetchData();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return isLoading ? Center(child: CircularProgressIndicator()) 
+    return isLoading
+    ? Center(child: CircularProgressIndicator())
     : Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -165,17 +178,15 @@ class _GroupPageState extends State<GroupPage> {
           onPressed: navigateToGroups,
         ),
         title: TextButton(
-          onPressed: () {},
-          child: Text(
-            _groupname
-          ),
+          onPressed: navigateToEditGroup,
+          child: Text(_groupname),
         ),
       ),
       body: Column(
-        children: <Widget> [
+        children: <Widget>[
           SizedBox(height: 30.0),
           Stack(
-            children: <Widget> [
+            children: <Widget>[
               Container(
                 height: 500,
                 width: double.infinity,
@@ -185,7 +196,7 @@ class _GroupPageState extends State<GroupPage> {
                   },
                   myLocationEnabled: true,
                   initialCameraPosition: CameraPosition(
-                    target: LatLng(_latitude, _longitude), 
+                    target: LatLng(_latitude, _longitude),
                     zoom: 15,
                   ),
                   markers: _markers,
@@ -209,7 +220,7 @@ class _GroupPageState extends State<GroupPage> {
               ),
             ],
           ),
-        ], 
+        ],
       )
     );
   }
