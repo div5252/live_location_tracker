@@ -37,11 +37,12 @@ class _GroupPageState extends State<GroupPage> {
   late String _groupname;
 
   onCreateMap(GoogleMapController mapController) {
-    location.onLocationChanged.listen((LocationData currentLocation) {
+    location.onLocationChanged.listen((LocationData currentLocation) async {
+      double prevZoom = await mapController.getZoomLevel(); 
       mapController.animateCamera(
         CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
-          zoom: 15,
+          zoom: prevZoom,
         )),
       );
       GeoFirePoint myLocation = Geoflutterfire().point(
@@ -144,6 +145,9 @@ class _GroupPageState extends State<GroupPage> {
       _longitude = _locationData.longitude!;
     });
 
+    // 10000ms and 100m
+    location.changeSettings(interval: 10000, distanceFilter: 100);
+
     initStream();
     setState(() {
       isLoading = false;
@@ -197,14 +201,14 @@ class _GroupPageState extends State<GroupPage> {
                   myLocationEnabled: true,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(_latitude, _longitude),
-                    zoom: 15,
+                    zoom: 12,
                   ),
                   markers: _markers,
                 ),
               ),
               Container(
                 alignment: Alignment.bottomLeft,
-                width: 100,
+                width: 200,
                 child: Slider(
                   min: 0,
                   max: 1000,

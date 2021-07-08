@@ -187,11 +187,14 @@ class _AddMembersState extends State<AddMembers> {
     );
   }
 
-  addMembers() {
-    groupReference.doc(widget.id).get().then((value) {
+  addMembers() async {
+    await groupReference.doc(widget.id).get().then((value) {
       _selectedNames.addAll((value.data()! as Map)['users'].cast<String>());
     });
-    
+    addMembersDB();
+  }
+
+  addMembersDB() {
     try {
       Map<String, dynamic> data = {'users': _selectedNames};
       groupReference.doc(widget.id).update(data);
@@ -200,12 +203,12 @@ class _AddMembersState extends State<AddMembers> {
       ));
       _selectedNames.clear();
       _isSelected.clear();
-      navigateToEditGroup();
     } 
     catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to add members'),
       ));
     }
+    navigateToEditGroup();
   }
 }
