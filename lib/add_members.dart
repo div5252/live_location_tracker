@@ -42,74 +42,79 @@ class _AddMembersState extends State<AddMembers> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-    ? Center(child: CircularProgressIndicator())
-    : Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.green,
-          ),
-          onPressed: navigateToEditGroup,
-        ),
-        title: hasSearched ? _buildSearchField() : Text("Search Members"),
-        actions: <Widget>[
-          IconButton(
+    return WillPopScope(
+      onWillPop: () async {
+        return navigateToEditGroup();
+      },
+      child: isLoading
+      ? Center(child: CircularProgressIndicator())
+      : Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
             icon: Icon(
-              Icons.search,
+              Icons.arrow_back,
+              color: Colors.green,
             ),
-            onPressed: () {
-              setState(() {
-                hasSearched = true;
-              });
-            },
+            onPressed: navigateToEditGroup,
           ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Align(
-            alignment: Alignment.topLeft,
-            child: Wrap(
-              spacing: 6.0,
-              runSpacing: 6.0,
-              children: _selectedNames
-                .map((item) => _buildChip(item))
-                .toList()
-                .cast<Widget>(),
+          title: hasSearched ? _buildSearchField() : Text("Search Members"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.search,
+              ),
+              onPressed: () {
+                setState(() {
+                  hasSearched = true;
+                });
+              },
             ),
+          ],
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topLeft,
+              child: Wrap(
+                spacing: 6.0,
+                runSpacing: 6.0,
+                children: _selectedNames
+                  .map((item) => _buildChip(item))
+                  .toList()
+                  .cast<Widget>(),
+              ),
+            ),
+            Divider(
+              thickness: 1.0,
+            ),
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: _names.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    changeSelection(index);
+                  },
+                  title: Text(
+                    _names[index],
+                  ),
+                  tileColor:
+                      _isSelected[_names[index]]! ? Colors.grey : null,
+                  trailing: _isSelected[_names[index]]!
+                  ? Icon(Icons.check)
+                  : null,
+                );
+              },
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: addMembers,
+          child: Icon(
+            Icons.check,
           ),
-          Divider(
-            thickness: 1.0,
-          ),
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: _names.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {
-                  changeSelection(index);
-                },
-                title: Text(
-                  _names[index],
-                ),
-                tileColor:
-                    _isSelected[_names[index]]! ? Colors.grey : null,
-                trailing: _isSelected[_names[index]]!
-                ? Icon(Icons.check)
-                : null,
-              );
-            },
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: addMembers,
-        child: Icon(
-          Icons.check,
         ),
       ),
     );
@@ -188,10 +193,17 @@ class _AddMembersState extends State<AddMembers> {
   }
 
   addMembers() async {
-    await groupReference.doc(widget.id).get().then((value) {
-      _selectedNames.addAll((value.data()! as Map)['users'].cast<String>());
-    });
-    addMembersDB();
+    if (_selectedNames.length != 0) {
+      await groupReference.doc(widget.id).get().then((value) {
+        _selectedNames.addAll((value.data()! as Map)['users'].cast<String>());
+      });
+      addMembersDB();
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Add atleast one member!'),
+      ));
+    }
   }
 
   addMembersDB() {

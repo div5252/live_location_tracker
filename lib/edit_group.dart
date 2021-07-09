@@ -56,93 +56,98 @@ class _EditGroupState extends State<EditGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-    ? Center(child: CircularProgressIndicator())
-    : Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.green,
+    return WillPopScope(
+      onWillPop: () async {
+        return navigateToGroupPage();
+      },
+      child: isLoading
+      ? Center(child: CircularProgressIndicator())
+      : Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.green,
+            ),
+            onPressed: navigateToGroupPage,
           ),
-          onPressed: navigateToGroupPage,
+          title: Text(
+            _groupname
+          ),
         ),
-        title: Text(
-          _groupname
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: navigateToAddMembers,
-              child: Text(
-                'Add members',
-                style: TextStyle(
-                  fontSize: 20, 
-                  fontWeight: FontWeight.bold, 
-                  color: Colors.white,
+        body: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: navigateToAddMembers,
+                child: Text(
+                  'Add members',
+                  style: TextStyle(
+                    fontSize: 20, 
+                    fontWeight: FontWeight.bold, 
+                    color: Colors.white,
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.orange),
                 ),
               ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.orange),
-              ),
             ),
-          ),
-          SizedBox(height: 50),
-          Container(
-            child: StreamBuilder<DocumentSnapshot>(
-              stream: groupReference.doc(widget.id).snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  DocumentSnapshot<Object?> documents = snapshot.data!;
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: (documents.data() as Map)['users'].length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(
-                            (documents.data() as Map)['users'][index]
+            SizedBox(height: 50),
+            Container(
+              child: StreamBuilder<DocumentSnapshot>(
+                stream: groupReference.doc(widget.id).snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    DocumentSnapshot<Object?> documents = snapshot.data!;
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: (documents.data() as Map)['users'].length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            title: Text(
+                              (documents.data() as Map)['users'][index]
+                            ),
+                            trailing: (documents.data() as Map)['users'][index] != _name ?
+                            IconButton(
+                              icon: Icon(Icons.highlight_remove),
+                              onPressed: () { 
+                                removeMemberDialog((documents.data() as Map)['users'][index]);
+                              }
+                            ) : null,
                           ),
-                          trailing: (documents.data() as Map)['users'][index] != _name ?
-                          IconButton(
-                            icon: Icon(Icons.highlight_remove),
-                            onPressed: () { 
-                              removeMemberDialog((documents.data() as Map)['users'][index]);
-                            }
-                          ) : null,
-                        ),
-                      );
-                    }
-                  );
-                }
-              },
+                        );
+                      }
+                    );
+                  }
+                },
+              ),
             ),
-          ),
-          SizedBox(height: 50),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: leaveGroupDialog,
-              child: Text(
-                'Leave Group',
-                style: TextStyle(
-                  fontSize: 20, 
-                  fontWeight: FontWeight.bold, 
-                  color: Colors.white,
+            SizedBox(height: 50),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: leaveGroupDialog,
+                child: Text(
+                  'Leave Group',
+                  style: TextStyle(
+                    fontSize: 20, 
+                    fontWeight: FontWeight.bold, 
+                    color: Colors.white,
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.orange),
                 ),
               ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.orange),
-              ),
             ),
-          ),
-        ]
+          ]
+        ),
       ),
     );
   }

@@ -170,62 +170,67 @@ class _GroupPageState extends State<GroupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-    ? Center(child: CircularProgressIndicator())
-    : Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.green,
+    return WillPopScope(
+    onWillPop: () async {
+      return navigateToGroups();
+    },
+    child: isLoading
+      ? Center(child: CircularProgressIndicator())
+      : Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.green,
+            ),
+            onPressed: navigateToGroups,
           ),
-          onPressed: navigateToGroups,
+          title: TextButton(
+            onPressed: navigateToEditGroup,
+            child: Text(_groupname),
+          ),
         ),
-        title: TextButton(
-          onPressed: navigateToEditGroup,
-          child: Text(_groupname),
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          SizedBox(height: 30.0),
-          Stack(
-            children: <Widget>[
-              Container(
-                height: 500,
-                width: double.infinity,
-                child: GoogleMap(
-                  onMapCreated: (controller) {
-                    onCreateMap(controller);
-                  },
-                  myLocationEnabled: true,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(_latitude, _longitude),
-                    zoom: 12,
+        body: Column(
+          children: <Widget>[
+            SizedBox(height: 30.0),
+            Stack(
+              children: <Widget>[
+                Container(
+                  height: 500,
+                  width: double.infinity,
+                  child: GoogleMap(
+                    onMapCreated: (controller) {
+                      onCreateMap(controller);
+                    },
+                    myLocationEnabled: true,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(_latitude, _longitude),
+                      zoom: 12,
+                    ),
+                    markers: _markers,
                   ),
-                  markers: _markers,
                 ),
-              ),
-              Container(
-                alignment: Alignment.bottomLeft,
-                width: 200,
-                child: Slider(
-                  min: 0,
-                  max: 1000,
-                  divisions: 200,
-                  value: _value,
-                  label: _label,
-                  activeColor: Colors.blue,
-                  inactiveColor: Colors.blue.withOpacity(0.2),
-                  onChanged: (double value) {
-                    changedRadius(value);
-                  },
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  width: 200,
+                  child: Slider(
+                    min: 0,
+                    max: 1000,
+                    divisions: 200,
+                    value: _value,
+                    label: _label,
+                    activeColor: Colors.blue,
+                    inactiveColor: Colors.blue.withOpacity(0.2),
+                    onChanged: (double value) {
+                      changedRadius(value);
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      )
+              ],
+            ),
+          ],
+        )
+      ),
     );
   }
 }

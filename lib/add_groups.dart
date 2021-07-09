@@ -44,72 +44,77 @@ class _AddGroupsState extends State<AddGroups> {
   
   @override
   Widget build(BuildContext context) {
-    return isLoading ? Center(child: CircularProgressIndicator()) 
-    : Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.green,
-          ),
-          onPressed: navigateToGroups,
-        ),
-        title: hasSearched ? _buildSearchField()
-        : Text(
-          "Create group"
-        ),
-        actions: <Widget>[
-          IconButton(
+    return WillPopScope(
+      onWillPop: () async {
+        return navigateToGroups();
+      },
+      child: isLoading ? Center(child: CircularProgressIndicator()) 
+      : Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
             icon: Icon(
-              Icons.search,
+              Icons.arrow_back,
+              color: Colors.green,
             ),
-            onPressed: () {
-              setState(() {
-                hasSearched = true;
-              });
-            },
+            onPressed: navigateToGroups,
           ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Align(
-            alignment: Alignment.topLeft,
-            child: Wrap(
-              spacing: 6.0,
-              runSpacing: 6.0,
-              children: _selectedNames.map((item) => _buildChip(item))
-              .toList()
-              .cast<Widget>(),
+          title: hasSearched ? _buildSearchField()
+          : Text(
+            "Create group"
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.search,
+              ),
+              onPressed: () {
+                setState(() {
+                  hasSearched = true;
+                });
+              },
             ),
+          ],
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topLeft,
+              child: Wrap(
+                spacing: 6.0,
+                runSpacing: 6.0,
+                children: _selectedNames.map((item) => _buildChip(item))
+                .toList()
+                .cast<Widget>(),
+              ),
+            ),
+            Divider(thickness: 1.0,),
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: _names.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    changeSelection(index);
+                  },
+                  title: Text(
+                    _names[index],
+                  ),
+                  tileColor: _isSelected[_names[index]]! ? Colors.grey : null,
+                  trailing: _isSelected[_names[index]]! ? Icon(
+                    Icons.check
+                  ) : null,
+                );
+              },
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: makeGroup,
+          child: Icon(
+            Icons.check,
           ),
-          Divider(thickness: 1.0,),
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: _names.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {
-                  changeSelection(index);
-                },
-                title: Text(
-                  _names[index],
-                ),
-                tileColor: _isSelected[_names[index]]! ? Colors.grey : null,
-                trailing: _isSelected[_names[index]]! ? Icon(
-                  Icons.check
-                ) : null,
-              );
-            },
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: makeGroup,
-        child: Icon(
-          Icons.check,
         ),
       ),
     );
@@ -191,55 +196,62 @@ class _AddGroupsState extends State<AddGroups> {
   }
 
   makeGroup() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Column(
-            children: <Widget>[
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: TextFormField(
-                        validator: (input) {
-                          if(input!.isEmpty) {
-                            return 'Enter Group Name';
-                          }
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Group Name',
-                          prefixIcon: Icon(Icons.group)
+    if (_selectedNames.length != 0) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Column(
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: TextFormField(
+                          validator: (input) {
+                            if(input!.isEmpty) {
+                              return 'Enter Group Name';
+                            }
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Group Name',
+                            prefixIcon: Icon(Icons.group)
+                          ),
+                          onSaved: (input) {
+                            _groupName = input!.trim();
+                          },
                         ),
-                        onSaved: (input) {
-                          _groupName = input!.trim();
-                        },
                       ),
-                    ),
-                    SizedBox(height: 30.0),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                      child: ElevatedButton(
-                        onPressed: addGroupToDB,
-                        child: Text(
-                          'Create Group',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
+                      SizedBox(height: 30.0),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
+                        child: ElevatedButton(
+                          onPressed: addGroupToDB,
+                          child: Text(
+                            'Create Group',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      }
-    );
+              ],
+            ),
+          );
+        }
+      );
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Add atleast one member!'),
+      ));
+    }
   }
 
   addGroupToDB() async {

@@ -87,125 +87,130 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.green,
+    return WillPopScope(
+      onWillPop: () async {
+        return navigateToProfile();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.green,
+            ),
+            onPressed: navigateToProfile,
           ),
-          onPressed: navigateToProfile,
         ),
-      ),
-      body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: ListView(
-          children: [
-            Text(
-              "Edit Profile",
-              style: TextStyle(
-                fontSize: 25,
+        body: Container(
+          padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+          child: ListView(
+            children: [
+              Text(
+                "Edit Profile",
+                style: TextStyle(
+                  fontSize: 25,
+                ),
               ),
-            ),
-            SizedBox(height: 35),
-            FutureBuilder(
-                future: fetchData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return Text("Loading");
-                  }
-                  return Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          onSaved: (input) {
-                            newname = _name;
-                            if (input!.isNotEmpty) {
-                              newname = input.trim();
-                            }
-                          },
-                          validator: null,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(bottom: 3),
-                            labelText: "Name",
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            hintText: "$_name",
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
+              SizedBox(height: 35),
+              FutureBuilder(
+                  future: fetchData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Text("Loading");
+                    }
+                    return Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            onSaved: (input) {
+                              newname = _name;
+                              if (input!.isNotEmpty) {
+                                newname = input.trim();
+                              }
+                            },
+                            validator: null,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(bottom: 3),
+                              labelText: "Name",
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                              hintText: "$_name",
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 35),
-                        TextFormField(
-                          onSaved: (input) {
-                            newemail = _email;
-                            if (input!.isNotEmpty) {
-                              newemail = input.trim();
-                            }
-                          },
-                          validator: null,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(bottom: 3),
-                            labelText: "Email",
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            hintText: "$_email",
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
+                          SizedBox(height: 35),
+                          TextFormField(
+                            onSaved: (input) {
+                              newemail = _email;
+                              if (input!.isNotEmpty) {
+                                newemail = input.trim();
+                              }
+                            },
+                            validator: null,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(bottom: 3),
+                              labelText: "Email",
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                              hintText: "$_email",
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 35),
-                      ],
+                          SizedBox(height: 35),
+                        ],
+                      ),
+                    );
+                  }),
+              SizedBox(height: 35),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  OutlinedButton(
+                    onPressed: navigateToEditProfile,
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
-                  );
-                }),
-            SizedBox(height: 35),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                OutlinedButton(
-                  onPressed: navigateToEditProfile,
-                  style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: Text(
-                    "CANCEL",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: editData,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    elevation: 2,
-                  ),
-                  child: Text(
-                    "SAVE",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
+                    child: Text(
+                      "CANCEL",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            // Add reset password
-          ],
+                  ElevatedButton(
+                    onPressed: editData,
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 2,
+                    ),
+                    child: Text(
+                      "SAVE",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // Add reset password
+            ],
+          ),
         ),
       ),
     );
