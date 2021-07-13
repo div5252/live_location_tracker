@@ -49,78 +49,127 @@ class _ProfileState extends State<Profile> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 1,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.green,
-            ),
-            onPressed: navigateToHome,
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: navigateToEditProfile,
-            ),
-          ],
+        title: const Text('My Profile'),
+        centerTitle: true,
+        backgroundColor: Colors.white,
         ),
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 40.0,
+        body: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned(
+              top:0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 340,
+                color: Colors.amber,
               ),
-              FutureBuilder(
-                  future: fetchData(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Text("Loading");
-                    }
-                    return Column(
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Name: $_name",
-                            style: TextStyle(
-                              fontSize: 20.0,
+            ),
+            Positioned(
+              top: MediaQuery.of(context).size.height - 456,
+              child: Container(
+                height: 456,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft:Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                  color: Colors.grey[200],
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 50,),
+                    FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return Text("Loading");
+                        }
+                        return Column(
+                          children: <Widget>[
+                            Container(
+                              child: Text(
+                                "$_name",
+                                style: TextStyle(
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        SizedBox(height: 30.0),
-                        Container(
-                          child: Text(
-                            "Email: $_email",
-                            style: TextStyle(
-                              fontSize: 20.0,
+                            SizedBox(height: 10.0),
+                            Container(
+                              child: Text(
+                                "$_email",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
-              SizedBox(
-                height: 40.0,
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                child: ElevatedButton(
-                  onPressed: signOut,
-                  child: Text(
-                    'SIGN OUT',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                          ],
+                        );
+                      }),
+                    SizedBox(
+                      height: 80.0,
                     ),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.orange),
-                  ),
+                    Container(
+                      width: 307,
+                      height:49,
+                      child: ElevatedButton(
+                        onPressed: navigateToEditProfile,
+                        child: Text(
+                          'EDIT PROFILE',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                side: BorderSide(color: Colors.black)),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blueGrey[900]),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 40,),
+                    Container(
+                      width: 307,
+                      height:49,
+                      child: ElevatedButton(
+                        onPressed: navigateToHome,
+                        child: Text(
+                          'SIGN OUT',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                side: BorderSide(color: Colors.black)),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey[200]),
+                        ),
+                      ),
+                    ),
+                    
+                  ],
                 ),
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

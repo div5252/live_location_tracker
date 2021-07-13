@@ -50,11 +50,12 @@ class _AddGroupsState extends State<AddGroups> {
       },
       child: isLoading ? Center(child: CircularProgressIndicator()) 
       : Scaffold(
+        backgroundColor: Colors.grey[200],
         appBar: AppBar(
+          backgroundColor: Colors.white,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.green,
             ),
             onPressed: navigateToGroups,
           ),
@@ -78,6 +79,7 @@ class _AddGroupsState extends State<AddGroups> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            SizedBox(height:15),
             Align(
               alignment: Alignment.topLeft,
               child: Wrap(
@@ -110,10 +112,16 @@ class _AddGroupsState extends State<AddGroups> {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: makeGroup,
-          child: Icon(
-            Icons.check,
+        floatingActionButton: Container(
+          width: 63,
+          height: 63,
+          child: FloatingActionButton(
+            onPressed: makeGroup,
+            backgroundColor: Colors.blueGrey[900],
+            child: Icon(
+              Icons.check,
+              size: 31,
+            ),
           ),
         ),
       ),
@@ -124,7 +132,7 @@ class _AddGroupsState extends State<AddGroups> {
     return new TextField(
       autofocus: true,
       style: TextStyle(
-        color: Colors.white,
+        color: Colors.black,
         fontSize: 16.0,
       ),
       onChanged: (text) {
@@ -186,9 +194,11 @@ class _AddGroupsState extends State<AddGroups> {
       ),
       deleteIcon: Icon(
         Icons.close,
+        size: 20,
+        color: Colors.white,
       ),
       onDeleted: () => deleteSelection(label),
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.blueGrey[900],
       elevation: 6.0,
       shadowColor: Colors.grey[60],
       padding: EdgeInsets.all(8.0),
@@ -200,8 +210,83 @@ class _AddGroupsState extends State<AddGroups> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            content: Column(
+          return Dialog(
+            insetPadding: EdgeInsets.all(0),
+            backgroundColor: Colors.transparent,
+            child: Stack(
+              overflow: Overflow.visible,
+              alignment: Alignment.bottomCenter,
+              children: <Widget>[
+                Positioned(
+                  top:180,
+                  child: Container(
+                    height: 505,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          topRight: Radius.circular(25),
+                        ),
+                        color: Colors.grey[200],
+                      ),
+                    child:Column(
+                      children: [
+                        SizedBox(height:50),
+                        Container(
+                          width: 328,
+                          height: 56,
+                          child: TextFormField(
+                            validator: (input) {
+                              if(input!.isEmpty) {
+                                return 'Enter Group Name';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Group Name',
+                              prefixIcon: Icon(Icons.group)
+                            ),
+                            onSaved: (input) {
+                              _groupName = input!.trim();
+                            },
+                          ),
+                        ),
+                        SizedBox(height:70),
+                        Container(
+                          width: 307,
+                          height:49,
+                          child: ElevatedButton(
+                            onPressed: addGroupToDB,
+                            child: Text(
+                              'CREATE GROUP',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    side: BorderSide(color: Colors.black)),
+                              ),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.blueGrey[900]),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ),
+                ),
+              ],
+            )
+          );
+          /*return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Column(
               children: <Widget>[
                 Form(
                   key: _formKey,
@@ -243,7 +328,7 @@ class _AddGroupsState extends State<AddGroups> {
                 ),
               ],
             ),
-          );
+          );*/
         }
       );
     }

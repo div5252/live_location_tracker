@@ -39,8 +39,10 @@ class _GroupsState extends State<Groups> {
   Widget build(BuildContext context) {
     return isLoading ? Center(child: CircularProgressIndicator()) 
     : Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text('Choose a group'),
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: <Widget> [
@@ -59,15 +61,20 @@ class _GroupsState extends State<Groups> {
                     itemCount: documents.length,
                     itemBuilder: (context, index) {
                       return Card(
+                        borderOnForeground: false,
+                        color: Colors.grey[100],
                         child: ListTile(
+                          hoverColor: Colors.grey[200],
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage(id: documents[index].id)));
                           },
                           title: Text(
-                            documents[index]['groupname']
+                            documents[index]['groupname'],
+                            style: TextStyle(fontSize: 16,),
                           ),
                           subtitle: Text(
                             usersList(documents[index]['users']),
+                            style: TextStyle(fontSize: 14,),
                           ),
                         ),
                       );
@@ -79,10 +86,16 @@ class _GroupsState extends State<Groups> {
           ),
         ]
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: navigateToSearchGroups,
-        child: Icon(
-          Icons.add,
+      floatingActionButton: Container(
+        height:63,
+        width:63,
+        child: FloatingActionButton(
+          backgroundColor: Colors.blueGrey[900],
+          onPressed: navigateToSearchGroups,
+          child: Icon(
+            Icons.add,
+            size: 31,
+          ),
         ),
       ),
     );

@@ -177,17 +177,24 @@ class _GroupPageState extends State<GroupPage> {
     child: isLoading
       ? Center(child: CircularProgressIndicator())
       : Scaffold(
+        backgroundColor: Colors.grey[200],
         appBar: AppBar(
+          backgroundColor: Colors.white,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.green,
             ),
             onPressed: navigateToGroups,
           ),
           title: TextButton(
             onPressed: navigateToEditGroup,
-            child: Text(_groupname),
+            child: Text(
+              _groupname,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
           ),
         ),
         body: Column(

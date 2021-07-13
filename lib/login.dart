@@ -92,71 +92,95 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login'),
+        backgroundColor: Colors.white,
+        ),
       body: SingleChildScrollView(
-              child: Container(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 100.0),
-              Container(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: TextFormField(
-                          validator: (input) {
-                            if(input!.isEmpty) 
-                            {
-                              return 'Enter Email';
-                            }
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: Icon(Icons.email)
+        child: Container(
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 250.0),
+                Container(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          width: 328,
+                          height: 56,
+                          child: TextFormField(
+                            validator: (input) {
+                              if(input!.isEmpty) 
+                              {
+                                return 'Enter Email';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'E-mail address',
+                              suffixIcon: Icon(Icons.email),
+                            ),
+                            onSaved: (input) => _email = input!.trim()
                           ),
-                          onSaved: (input) => _email = input!.trim()
                         ),
-                      ),
-                      Container(
-                        child: TextFormField(
-                          validator: (input) {
-                            if(input!.length < 6) 
-                            {
-                              return 'Password has a minimum 6 characters';
-                            }
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            prefixIcon: Icon(Icons.lock)
+                        SizedBox(height:20),
+                        Container(
+                          width: 328,
+                          height: 56,
+                          child: TextFormField(
+                            validator: (input) {
+                              if(input!.length < 6) 
+                              {
+                                return 'Password has a minimum 6 characters';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              suffixIcon: Icon(Icons.lock)
+                            ),
+                            obscureText: true,
+                            onSaved: (input) => _password = input!
                           ),
-                          obscureText: true,
-                          onSaved: (input) => _password = input!
                         ),
-                      ),
-                      SizedBox(height: 20.0),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                        child: ElevatedButton(
-                          onPressed: login, 
-                          child: Text(
-                            'LOGIN',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
+                        SizedBox(height: 80.0),
+                        Container(
+                          width: 307,
+                          height:49,
+                          child: ElevatedButton(
+                            onPressed: login,
+                            child: Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    side: BorderSide(color: Colors.black)),
+                              ),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.blueGrey[900]),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                child: Text('Create an Account'),
-                onTap: navigateToSignUp,
-              ),
-            ],
+                SizedBox(height:20),
+                GestureDetector(
+                  child: Text('Create an Account'),
+                  onTap: navigateToSignUp,
+                ),
+              ],
+            ),
           ),
         ),
       ),

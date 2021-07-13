@@ -81,73 +81,97 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Create Account'),
+        backgroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         child: Container(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 100.0),
-              Container(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: TextFormField(
-                            validator: (input) {
-                              if (input!.isEmpty) {
-                                return 'Enter Name';
-                              }
-                            },
-                            decoration: InputDecoration(
-                                labelText: 'Name',
-                                prefixIcon: Icon(Icons.person)),
-                            onSaved: (input) => _name = input!.trim()),
-                      ),
-                      Container(
-                        child: TextFormField(
-                            validator: (input) {
-                              if (input!.isEmpty) {
-                                return 'Enter Email';
-                              }
-                            },
-                            decoration: InputDecoration(
-                                labelText: 'Email',
-                                prefixIcon: Icon(Icons.email)),
-                            onSaved: (input) => _email = input!.trim()),
-                      ),
-                      Container(
-                        child: TextFormField(
-                            validator: (input) {
-                              if (input!.length < 6) {
-                                return 'Provide minimum 6 characters';
-                              }
-                            },
-                            decoration: InputDecoration(
-                                labelText: 'Password',
-                                prefixIcon: Icon(Icons.lock)),
-                            obscureText: true,
-                            onSaved: (input) => _password = input!),
-                      ),
-                      SizedBox(height: 20.0),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                        child: ElevatedButton(
-                          onPressed: signUp,
-                          child: Text(
-                            'SignUp',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 200.0),
+                Container(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          width: 328,
+                          height: 56,
+                          child: TextFormField(
+                              validator: (input) {
+                                if (input!.isEmpty) {
+                                  return 'Enter Name';
+                                }
+                              },
+                              decoration: InputDecoration(
+                                  labelText: 'Name',
+                                  suffixIcon: Icon(Icons.person)),
+                              onSaved: (input) => _name = input!.trim()),
+                        ),
+                        Container( 
+                          width: 328,
+                          height: 56,
+                          child: TextFormField(
+                              validator: (input) {
+                                if (input!.isEmpty) {
+                                  return 'Enter Email';
+                                }
+                              },
+                              decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  suffixIcon: Icon(Icons.email)),
+                              onSaved: (input) => _email = input!.trim()),
+                        ),
+                        Container(
+                          width: 328,
+                          height: 56,
+                          child: TextFormField(
+                              validator: (input) {
+                                if (input!.length < 6) {
+                                  return 'Provide minimum 6 characters';
+                                }
+                              },
+                              decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  suffixIcon: Icon(Icons.lock)),
+                              obscureText: true,
+                              onSaved: (input) => _password = input!),
+                        ),
+                        SizedBox(height: 90.0),
+                        Container(
+                          width: 307,
+                          height:49,
+                          child: ElevatedButton(
+                            onPressed: signUp,
+                            child: Text(
+                              'REGISTER',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    side: BorderSide(color: Colors.black)),
+                              ),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.blueGrey[900]),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

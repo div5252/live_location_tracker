@@ -93,124 +93,160 @@ class _EditProfileState extends State<EditProfile> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 1,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.green,
-            ),
-            onPressed: navigateToProfile,
-          ),
+        title: const Text('Edit Profile'),
+        backgroundColor: Colors.white,
         ),
-        body: Container(
-          padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-          child: ListView(
-            children: [
-              Text(
-                "Edit Profile",
-                style: TextStyle(
-                  fontSize: 25,
+        body: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned(
+              top:0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 340,
+                color: Colors.amber,
+              ),
+            ),
+            Positioned(
+              top: MediaQuery.of(context).size.height - 456,
+              child: Container(
+                height: 456,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft:Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                  color: Colors.grey[200],
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 50,),
+                    FutureBuilder(
+                    future: fetchData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return Text("Loading");
+                      }
+                      return Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 328,
+                              height: 56,
+                              child: TextFormField(
+                                onSaved: (input) {
+                                  newname = _name;
+                                  if (input!.isNotEmpty) {
+                                    newname = input.trim();
+                                  }
+                                },
+                                validator: null,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(bottom: 3),
+                                  labelText: "Name",
+                                  suffixIcon: Icon(Icons.person),
+                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                  hintText: "$_name",
+                                  hintStyle: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              width: 328,
+                              height: 56,
+                              child: TextFormField(
+                                onSaved: (input) {  
+                                  newemail = _email;
+                                  if (input!.isNotEmpty) {
+                                    newemail = input.trim();
+                                  }
+                                },
+                                validator: null,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(bottom: 3),
+                                  labelText: "Email",
+                                  suffixIcon: Icon(Icons.email),
+                                  
+                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                  hintText: "$_email",
+                                  hintStyle: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 35),
+                          ],
+                        ),
+                      );
+                    }),
+                    
+                    Container(
+                      width: 307,
+                      height:49,
+                      child: ElevatedButton(
+                        onPressed: editData,
+                        child: Text(
+                          'SAVE',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                side: BorderSide(color: Colors.black)),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blueGrey[900]),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30,),
+                    Container(
+                      width: 307,
+                      height:49,
+                      child: ElevatedButton(
+                        onPressed: navigateToProfile,
+                        child: Text(
+                          'CANCEL',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                side: BorderSide(color: Colors.black)),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey[200]),
+                        ),
+                      ),
+                    ),
+                    
+                  ],
                 ),
               ),
-              SizedBox(height: 35),
-              FutureBuilder(
-                  future: fetchData(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Text("Loading");
-                    }
-                    return Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            onSaved: (input) {
-                              newname = _name;
-                              if (input!.isNotEmpty) {
-                                newname = input.trim();
-                              }
-                            },
-                            validator: null,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(bottom: 3),
-                              labelText: "Name",
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                              hintText: "$_name",
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 35),
-                          TextFormField(
-                            onSaved: (input) {
-                              newemail = _email;
-                              if (input!.isNotEmpty) {
-                                newemail = input.trim();
-                              }
-                            },
-                            validator: null,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(bottom: 3),
-                              labelText: "Email",
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                              hintText: "$_email",
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 35),
-                        ],
-                      ),
-                    );
-                  }),
-              SizedBox(height: 35),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  OutlinedButton(
-                    onPressed: navigateToEditProfile,
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: Text(
-                      "CANCEL",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: editData,
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Text(
-                      "SAVE",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              // Add reset password
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

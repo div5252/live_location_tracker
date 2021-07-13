@@ -59,50 +59,91 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: !isloggedin ? CircularProgressIndicator() :
-        Column(
-          children: <Widget>[
-            SizedBox(height: 100.0),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: navigateToProfile,
-                child: Text(
-                  'Profile',
-                  style: TextStyle(
-                    fontSize: 20, 
-                    fontWeight: FontWeight.bold, 
-                    color: Colors.white,
-                  ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.orange),
-                ),
-              ),
-            ),
-            SizedBox(height: 30.0),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: navigateToGroups,
-                child: Text(
-                  'Groups',
-                  style: TextStyle(
-                    fontSize: 20, 
-                    fontWeight: FontWeight.bold, 
-                    color: Colors.white,
-                  ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.orange),
-                ),
-              ),
-            ),
-          ],
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Positioned(
+          top:0,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 379,
+            color: Colors.amber,
+          ),
         ),
-      ),
+        Positioned(
+          top: MediaQuery.of(context).size.height - 426,
+          child: Container(
+            height: 426,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft:Radius.circular(25),
+                topRight: Radius.circular(25),
+              ),
+              color: Colors.grey[200],
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 200,),
+                Container(
+                  width: 307,
+                  height:49,
+                  child: ElevatedButton(
+                    onPressed: navigateToProfile,
+                    child: Text(
+                      'PROFILE',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: BorderSide(color: Colors.black)),
+                      ),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.blueGrey[900]),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 40,),
+                Container(
+                  width: 307,
+                  height:49,
+                  child: ElevatedButton(
+                    onPressed: navigateToGroups,
+                    child: Text(
+                      'GROUPS',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: BorderSide(color: Colors.black)),
+                      ),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey[200]),
+                    ),
+                  ),
+                ),
+                
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 }

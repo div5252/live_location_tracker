@@ -60,71 +60,117 @@ class _WelcomeState extends State<Welcome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 100.0),
-            RichText(
-              text: TextSpan(
-                text: 'Welcome to Live Location Tracker',
-                style: TextStyle(
-                  fontSize: 25.0, 
-                  fontWeight: FontWeight.bold, 
-                  color: Colors.black,
-                ),
-              )
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Positioned(
+          top:0,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 379,
+            color: Colors.amber,
+          ),
+        ),
+        Positioned(
+          top: MediaQuery.of(context).size.height - 426,
+          child: Container(
+            height: 426,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft:Radius.circular(25),
+                topRight: Radius.circular(25),
+              ),
+              color: Colors.grey[200],
             ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
+            child: Column(
+              children: [
+                SizedBox(height: 180,),
+                Container(
+                  width: 307,
+                  height:49,
                   child: ElevatedButton(
                     onPressed: navigateToLogin,
                     child: Text(
                       'LOGIN',
                       style: TextStyle(
-                        fontSize: 20, 
-                        fontWeight: FontWeight.bold, 
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                         color: Colors.white,
+                        letterSpacing: 1,
                       ),
                     ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.orange),
+                      shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: BorderSide(color: Colors.black)),
+                      ),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.blueGrey[900]),
                     ),
                   ),
                 ),
-                SizedBox(width: 5.0),
-                Padding(
-                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                SizedBox(height: 21,),
+                Container(
+                  width: 307,
+                  height:49,
                   child: ElevatedButton(
                     onPressed: navigateToRegister,
                     child: Text(
                       'REGISTER',
                       style: TextStyle(
-                        fontSize: 20, 
-                        fontWeight: FontWeight.bold, 
-                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                        letterSpacing: 1,
                       ),
                     ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.orange),
+                      shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: BorderSide(color: Colors.black)),
+                      ),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey[200]),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 21,),
+                Container(
+                  width: 307,
+                  height:49,
+                  child: ElevatedButton(
+                    onPressed: googleSignIn,
+                    child: Text(
+                      'Sign in with Google',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: BorderSide(color: Colors.black)),
+                      ),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey[200]),
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20.0,),
-            SignInButton(
-              Buttons.Google,
-              text: "Sign up with Google",
-              onPressed: googleSignIn,
-            )
-          ],
-        ),
-      ),
+          ),
+        )
+      ],
     );
   }
 }
