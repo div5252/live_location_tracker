@@ -63,11 +63,12 @@ class _EditGroupState extends State<EditGroup> {
       child: isLoading
       ? Center(child: CircularProgressIndicator())
       : Scaffold(
+        backgroundColor: Colors.grey[200],
         appBar: AppBar(
+          backgroundColor: Colors.white,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.green,
             ),
             onPressed: navigateToGroupPage,
           ),
@@ -77,24 +78,7 @@ class _EditGroupState extends State<EditGroup> {
         ),
         body: Column(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: navigateToAddMembers,
-                child: Text(
-                  'Add members',
-                  style: TextStyle(
-                    fontSize: 20, 
-                    fontWeight: FontWeight.bold, 
-                    color: Colors.white,
-                  ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.orange),
-                ),
-              ),
-            ),
-            SizedBox(height: 50),
+            SizedBox(height: 20),
             Container(
               child: StreamBuilder<DocumentSnapshot>(
                 stream: groupReference.doc(widget.id).snapshots(),
@@ -129,23 +113,61 @@ class _EditGroupState extends State<EditGroup> {
               ),
             ),
             SizedBox(height: 50),
-            Padding(
-              padding: EdgeInsets.all(8.0),
+            
+            Container(
+              width: 307,
+              height:49,
+              child: ElevatedButton(
+                onPressed: navigateToAddMembers,
+                child: Text(
+                  'Add Members',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    letterSpacing: 1,
+                  ),
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<
+                      RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: BorderSide(color: Colors.black)),
+                  ),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.blueGrey[900]),
+                ),
+              ),
+            ),
+            SizedBox(height: 30),
+            Container(
+              width: 307,
+              height:49,
               child: ElevatedButton(
                 onPressed: leaveGroupDialog,
                 child: Text(
                   'Leave Group',
                   style: TextStyle(
-                    fontSize: 20, 
-                    fontWeight: FontWeight.bold, 
-                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                    letterSpacing: 1,
                   ),
                 ),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.orange),
+                  shape: MaterialStateProperty.all<
+                      RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: BorderSide(color: Colors.black)),
+                  ),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.grey[200]),
                 ),
               ),
             ),
+
           ]
         ),
       ),

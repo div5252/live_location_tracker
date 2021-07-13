@@ -66,8 +66,9 @@ class _HomeState extends State<Home> {
           top:0,
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: 379,
-            color: Colors.amber,
+            height: MediaQuery.of(context).size.height - 406,
+            decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage("assets/WelcomeBGM.png"), fit: BoxFit.cover)),
           ),
         ),
         Positioned(

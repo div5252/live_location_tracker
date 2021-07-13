@@ -49,11 +49,12 @@ class _AddMembersState extends State<AddMembers> {
       child: isLoading
       ? Center(child: CircularProgressIndicator())
       : Scaffold(
+        backgroundColor: Colors.grey[200],
         appBar: AppBar(
+          backgroundColor: Colors.white,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.green,
             ),
             onPressed: navigateToEditGroup,
           ),
@@ -101,7 +102,7 @@ class _AddMembersState extends State<AddMembers> {
                     _names[index],
                   ),
                   tileColor:
-                      _isSelected[_names[index]]! ? Colors.grey : null,
+                      _isSelected[_names[index]]! ? Colors.grey[300] : null,
                   trailing: _isSelected[_names[index]]!
                   ? Icon(Icons.check)
                   : null,
@@ -110,10 +111,16 @@ class _AddMembersState extends State<AddMembers> {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: addMembers,
-          child: Icon(
-            Icons.check,
+        floatingActionButton: Container(
+          width: 63,
+          height: 63,
+          child: FloatingActionButton(
+            onPressed: addMembers,
+            backgroundColor: Colors.blueGrey[900],
+            child: Icon(
+              Icons.check,
+              size: 31,
+            ),
           ),
         ),
       ),
@@ -124,7 +131,7 @@ class _AddMembersState extends State<AddMembers> {
     return new TextField(
       autofocus: true,
       style: TextStyle(
-        color: Colors.white,
+        color: Colors.black,
         fontSize: 16.0,
       ),
       onChanged: (text) {
@@ -183,9 +190,11 @@ class _AddMembersState extends State<AddMembers> {
       ),
       deleteIcon: Icon(
         Icons.close,
+        size: 20,
+        color: Colors.white,
       ),
       onDeleted: () => deleteSelection(label),
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.blueGrey[900],
       elevation: 6.0,
       shadowColor: Colors.grey[60],
       padding: EdgeInsets.all(8.0),

@@ -203,6 +203,11 @@ class _GroupPageState extends State<GroupPage> {
             Stack(
               children: <Widget>[
                 Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                    )
+                  ),
                   height: 500,
                   width: double.infinity,
                   child: GoogleMap(
@@ -234,6 +239,33 @@ class _GroupPageState extends State<GroupPage> {
                   ),
                 ),
               ],
+            ),
+            SizedBox(height:30),
+            Container(
+              width: 307,
+              height:49,
+              child: ElevatedButton(
+                onPressed: navigateToEditGroup,
+                child: Text(
+                  'EDIT GROUP',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    letterSpacing: 1,
+                  ),
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<
+                      RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: BorderSide(color: Colors.black)),
+                  ),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.blueGrey[900]),
+                ),
+              ),
             ),
           ],
         )

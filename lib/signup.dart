@@ -30,12 +30,13 @@ class _SignUpState extends State<SignUp> {
   }
 
   addData() async {
-    Map<String, dynamic> data = {'name': _name, 'email': _email};
-    collectionReference.doc(_auth.currentUser!.uid.toString()).set(data);
+    Map<String, dynamic> data = {'name': _name, 'email': _email, 'signin mode': 'email'};
+    await collectionReference.doc(_auth.currentUser!.uid.toString()).set(data);
 
     SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
     sharedpreferences.setString('name', _name);
     sharedpreferences.setString('email', _email);
+    sharedpreferences.setString('signin mode', 'email');
   }
 
   @override

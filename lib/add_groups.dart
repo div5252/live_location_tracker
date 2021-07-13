@@ -103,7 +103,7 @@ class _AddGroupsState extends State<AddGroups> {
                   title: Text(
                     _names[index],
                   ),
-                  tileColor: _isSelected[_names[index]]! ? Colors.grey : null,
+                  tileColor: _isSelected[_names[index]]! ? Colors.grey[300] : null,
                   trailing: _isSelected[_names[index]]! ? Icon(
                     Icons.check
                   ) : null,
@@ -229,55 +229,58 @@ class _AddGroupsState extends State<AddGroups> {
                         ),
                         color: Colors.grey[200],
                       ),
-                    child:Column(
-                      children: [
-                        SizedBox(height:50),
-                        Container(
-                          width: 328,
-                          height: 56,
-                          child: TextFormField(
-                            validator: (input) {
-                              if(input!.isEmpty) {
-                                return 'Enter Group Name';
-                              }
-                            },
-                            decoration: InputDecoration(
-                              labelText: 'Group Name',
-                              prefixIcon: Icon(Icons.group)
-                            ),
-                            onSaved: (input) {
-                              _groupName = input!.trim();
-                            },
-                          ),
-                        ),
-                        SizedBox(height:70),
-                        Container(
-                          width: 307,
-                          height:49,
-                          child: ElevatedButton(
-                            onPressed: addGroupToDB,
-                            child: Text(
-                              'CREATE GROUP',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                                letterSpacing: 1,
+                    child:Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(height:50),
+                          Container(
+                            width: 328,
+                            height: 56,
+                            child: TextFormField(
+                              validator: (input) {
+                                if(input!.isEmpty) {
+                                  return 'Enter Group Name';
+                                }
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'Group Name',
+                                prefixIcon: Icon(Icons.group)
                               ),
-                            ),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                    side: BorderSide(color: Colors.black)),
-                              ),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.blueGrey[900]),
+                              onSaved: (input) {
+                                _groupName = input!.trim();
+                              },
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height:70),
+                          Container(
+                            width: 307,
+                            height:49,
+                            child: ElevatedButton(
+                              onPressed: addGroupToDB,
+                              child: Text(
+                                'CREATE GROUP',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  letterSpacing: 1,
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      side: BorderSide(color: Colors.black)),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.blueGrey[900]),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   ),
                 ),

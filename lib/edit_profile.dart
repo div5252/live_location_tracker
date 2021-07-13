@@ -103,7 +103,7 @@ class _EditProfileState extends State<EditProfile> {
               top:0,
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: 340,
+                height: MediaQuery.of(context).size.height - 436,
                 color: Colors.amber,
               ),
             ),

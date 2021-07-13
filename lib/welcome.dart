@@ -17,6 +17,11 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome> {
 
+  GoogleSignIn _googleSignIn =GoogleSignIn(); // here object of google signIn created
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+
   navigateToLogin() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }
@@ -25,9 +30,6 @@ class _WelcomeState extends State<Welcome> {
   }
   
   Future<UserCredential> googleSignIn() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn(); // here object of google signIn created
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -39,16 +41,10 @@ class _WelcomeState extends State<Welcome> {
         final UserCredential user =
             await _auth.signInWithCredential(credential);
 
+        await addData(googleUser);
 
-        
-        Map<String, dynamic> data = {'name': Text(googleUser.displayName ?? ''), 'email': Text(googleUser.email)};
-        collectionReference.doc(_auth.currentUser!.uid.toString()).set(data);
-        // _email = ds['email'];
-        SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
-        sharedpreferences.setString('name', googleUser.displayName??'');
-        sharedpreferences.setString('email', googleUser.email);
-
-        await Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+        await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
 
         return user;
       } else {
@@ -58,6 +54,19 @@ class _WelcomeState extends State<Welcome> {
       throw StateError('Sign in Aborted');
   }
 
+  addData(googleUser) async {
+    Map<String, dynamic> data = {
+      'name': googleUser.displayName,
+      'email': googleUser.email,
+      'signin mode': 'google',
+    };
+    await collectionReference.doc(_auth.currentUser!.uid.toString()).set(data);
+    // _email = ds['email'];
+    SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
+    sharedpreferences.setString('name', googleUser.displayName ?? '');
+    sharedpreferences.setString('email', googleUser.email);
+    sharedpreferences.setString('signin mode', 'google');
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -67,8 +76,9 @@ class _WelcomeState extends State<Welcome> {
           top:0,
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: 379,
-            color: Colors.amber,
+            height: MediaQuery.of(context).size.height - 406,
+            decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage("assets/HomeBGM.png"), fit: BoxFit.cover)),
           ),
         ),
         Positioned(
