@@ -95,7 +95,15 @@ class _HomeState extends State<Home> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(height: 200,),
+                    SizedBox(height:40),
+                    Container(
+                      width:170,
+                      height:110,
+                      decoration: BoxDecoration(
+                      color:Colors.transparent,
+                      image: DecorationImage(image: AssetImage("assets/Logo.png"), fit: BoxFit.fill)),
+                    ),
+                    SizedBox(height:80),
                     Container(
                       width: 307,
                       height:49,

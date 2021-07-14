@@ -91,7 +91,42 @@ class _SignUpState extends State<SignUp> {
           child: Center(
             child: Column(
               children: <Widget>[
-                SizedBox(height: 200.0),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height:40),
+                        Container(
+                          width:89.52,
+                          height:61.72,
+                          decoration: BoxDecoration(
+                          color:Colors.transparent,
+                          image: DecorationImage(image: AssetImage("assets/Logo.png"), fit: BoxFit.fill)),
+                        ),
+                        SizedBox(height:30),
+                        Text(
+                          'Create your',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w100,
+                          ),
+                        ),
+                        SizedBox(height:8),
+                        Text(
+                          'Account',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height:60),
+                      ],
+                    ),
+                  ),
+                ),
                 Container(
                   child: Form(
                     key: _formKey,

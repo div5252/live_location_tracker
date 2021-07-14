@@ -76,7 +76,8 @@ class _ProfileState extends State<Profile> {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height - 436,
-                color: Colors.amber,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage("assets/Profile.jpg"), fit: BoxFit.fill)),
               ),
             ),
             Positioned(

@@ -95,7 +95,42 @@ class _WelcomeState extends State<Welcome> {
             ),
             child: Column(
               children: [
-                SizedBox(height: 180,),
+                SizedBox(height:30),
+                Container(
+                  width: 140,
+                  height: 140,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(70),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height:10),
+                      Container(
+                        width:78.12,
+                        height:53.86,
+                        decoration: BoxDecoration(
+                        color:Colors.transparent,
+                        image: DecorationImage(image: AssetImage("assets/Logo.png"), fit: BoxFit.fill)),
+                      ),
+                      SizedBox(height:10),
+                      Material(
+                        child: Text(
+                          'GROUPNAV',
+                          style: TextStyle(
+                            wordSpacing: 10,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 30,),
                 Container(
                   width: 307,
                   height:49,

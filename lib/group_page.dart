@@ -199,46 +199,53 @@ class _GroupPageState extends State<GroupPage> {
         ),
         body: Column(
           children: <Widget>[
-            SizedBox(height: 30.0),
-            Stack(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                    )
-                  ),
-                  height: 500,
-                  width: double.infinity,
-                  child: GoogleMap(
-                    onMapCreated: (controller) {
-                      onCreateMap(controller);
-                    },
-                    myLocationEnabled: true,
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(_latitude, _longitude),
-                      zoom: 12,
-                    ),
-                    markers: _markers,
-                  ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                )
+              ),
+              height: 420,
+              width: double.infinity,
+              child: GoogleMap(
+                onMapCreated: (controller) {
+                  onCreateMap(controller);
+                },
+                myLocationEnabled: true,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(_latitude, _longitude),
+                  zoom: 12,
                 ),
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  width: 200,
-                  child: Slider(
-                    min: 0,
-                    max: 1000,
-                    divisions: 200,
-                    value: _value,
-                    label: _label,
-                    activeColor: Colors.blue,
-                    inactiveColor: Colors.blue.withOpacity(0.2),
-                    onChanged: (double value) {
-                      changedRadius(value);
-                    },
-                  ),
-                ),
-              ],
+                markers: _markers,
+              ),
+            ),
+            SizedBox(height:10),
+            Container(
+              width: 200,
+              child: Slider(
+                min: 0,
+                max: 1000,
+                divisions: 200,
+                value: _value,
+                label: _label,
+                activeColor: Colors.blueGrey[900],
+                inactiveColor: Colors.black.withOpacity(0.2),
+                onChanged: (double value) {
+                  changedRadius(value);
+                },
+              ),
+            ),
+            Text('Current Search Radius',
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 18,
+              ),
+            ),
+            Text('$_value Kms',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
             SizedBox(height:30),
             Container(
