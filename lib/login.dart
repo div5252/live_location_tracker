@@ -19,7 +19,7 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   
 
-  late String _email, _password, _name;
+  late String _email, _password, _name, _mode;
 
   checkAuthentication() async
   {
@@ -36,10 +36,12 @@ class _LoginState extends State<Login> {
   {
     DocumentSnapshot ds = await collectionReference.doc(_auth.currentUser!.uid).get(); 
     _name = ds['name'];
-    // _email = ds['email'];
+    _email = ds['email'];
+    _mode = ds['signin mode'];
     SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
     sharedpreferences.setString('name', _name);
     sharedpreferences.setString('email', _email);
+    sharedpreferences.setString('signin mode', _mode);
   }
 
   @override

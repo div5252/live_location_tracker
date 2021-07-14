@@ -58,9 +58,15 @@ class _ProfileState extends State<Profile> {
       },
       child: Scaffold(
         appBar: AppBar(
-        title: const Text('My Profile'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
+          title: const Text('My Profile'),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: navigateToHome,
+          ),
+          backgroundColor: Colors.white,
         ),
         body: Stack(
           alignment: Alignment.center,

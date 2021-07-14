@@ -21,10 +21,16 @@ class _AddMembersState extends State<AddMembers> {
   List<String> _selectedNames = <String>[];
   Map<String, bool> _isSelected = <String, bool>{};
   bool hasSearched = false;
+  List<String> _groupMembers = <String>[];
 
   fetchData() async {
     SharedPreferences sharedpreferences = await SharedPreferences.getInstance();
     _name = sharedpreferences.getString('name')!;
+
+    await groupReference.doc(widget.id).get().then((value) {
+      _groupMembers.addAll((value.data()! as Map)['users'].cast<String>());
+    });
+
     setState(() {
       isLoading = false;
     });
@@ -94,7 +100,16 @@ class _AddMembersState extends State<AddMembers> {
               shrinkWrap: true,
               itemCount: _names.length,
               itemBuilder: (context, index) {
-                return ListTile(
+                return _groupMembers.contains(_names[index]) ? 
+                ListTile(
+                  title: Text(
+                    _names[index],
+                  ),
+                  subtitle: Text(
+                    'Already added to the group'
+                  ),
+                ) 
+                : ListTile(
                   onTap: () {
                     changeSelection(index);
                   },
@@ -102,7 +117,7 @@ class _AddMembersState extends State<AddMembers> {
                     _names[index],
                   ),
                   tileColor:
-                      _isSelected[_names[index]]! ? Colors.grey[300] : null,
+                    _isSelected[_names[index]]! ? Colors.grey[300] : null,
                   trailing: _isSelected[_names[index]]!
                   ? Icon(Icons.check)
                   : null,
@@ -201,11 +216,11 @@ class _AddMembersState extends State<AddMembers> {
     );
   }
 
-  addMembers() async {
+  addMembers() {
     if (_selectedNames.length != 0) {
-      await groupReference.doc(widget.id).get().then((value) {
-        _selectedNames.addAll((value.data()! as Map)['users'].cast<String>());
-      });
+      _selectedNames.insertAll(0, _groupMembers);
+      _selectedNames.remove(_name);
+      _selectedNames.add(_name);
       addMembersDB();
     }
     else {

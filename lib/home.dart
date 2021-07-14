@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'profile.dart';
 import 'welcome.dart';
 import 'groups.dart';
@@ -57,94 +58,104 @@ class _HomeState extends State<Home> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Groups()));
   }
 
+  exitApp() async {
+    SystemNavigator.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Positioned(
-          top:0,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - 406,
-            decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage("assets/WelcomeBGM.png"), fit: BoxFit.cover)),
-          ),
-        ),
-        Positioned(
-          top: MediaQuery.of(context).size.height - 426,
-          child: Container(
-            height: 426,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft:Radius.circular(25),
-                topRight: Radius.circular(25),
+    return WillPopScope(
+      onWillPop: () async {
+        return exitApp();
+      },  
+      child: Scaffold(
+        body: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned(
+              top:0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height - 406,
+                decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage("assets/WelcomeBGM.png"), fit: BoxFit.cover)),
               ),
-              color: Colors.grey[200],
             ),
-            child: Column(
-              children: [
-                SizedBox(height: 200,),
-                Container(
-                  width: 307,
-                  height:49,
-                  child: ElevatedButton(
-                    onPressed: navigateToProfile,
-                    child: Text(
-                      'PROFILE',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<
-                          RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            side: BorderSide(color: Colors.black)),
-                      ),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.blueGrey[900]),
-                    ),
+            Positioned(
+              top: MediaQuery.of(context).size.height - 426,
+              child: Container(
+                height: 426,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft:Radius.circular(25),
+                    topRight: Radius.circular(25),
                   ),
+                  color: Colors.grey[200],
                 ),
-                SizedBox(height: 40,),
-                Container(
-                  width: 307,
-                  height:49,
-                  child: ElevatedButton(
-                    onPressed: navigateToGroups,
-                    child: Text(
-                      'GROUPS',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                        letterSpacing: 1,
+                child: Column(
+                  children: [
+                    SizedBox(height: 200,),
+                    Container(
+                      width: 307,
+                      height:49,
+                      child: ElevatedButton(
+                        onPressed: navigateToProfile,
+                        child: Text(
+                          'PROFILE',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                side: BorderSide(color: Colors.black)),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blueGrey[900]),
+                        ),
                       ),
                     ),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<
-                          RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            side: BorderSide(color: Colors.black)),
+                    SizedBox(height: 40,),
+                    Container(
+                      width: 307,
+                      height:49,
+                      child: ElevatedButton(
+                        onPressed: navigateToGroups,
+                        child: Text(
+                          'GROUPS',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                side: BorderSide(color: Colors.black)),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey[200]),
+                        ),
                       ),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.grey[200]),
                     ),
-                  ),
+                  ],
                 ),
-                
-              ],
-            ),
-          ),
-        )
-      ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
