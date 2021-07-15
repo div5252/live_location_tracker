@@ -104,7 +104,8 @@ class _EditProfileState extends State<EditProfile> {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height - 436,
-                color: Colors.amber,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage("assets/edit_profilebgm.jpg"), fit: BoxFit.fill)),
               ),
             ),
             Positioned(
