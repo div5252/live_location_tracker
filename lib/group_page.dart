@@ -145,6 +145,8 @@ class _GroupPageState extends State<GroupPage> {
       _longitude = _locationData.longitude!;
     });
 
+    location.enableBackgroundMode(enable: true);
+
     // 10000ms and 100m
     location.changeSettings(interval: 10000, distanceFilter: 100);
 
